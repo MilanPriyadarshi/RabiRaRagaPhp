@@ -16,17 +16,17 @@
 <body>
   <div class="container x">
     <h2>Admin LogIn Panel</h2>
-  <form>
+  <form action="admin_login.php" method="post">
     <div class="mb-3 my-4">
       <label for="exampleInputEmail1" class="form-label">Email</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp">
       <div id="emailHelp" class="form-text"></div>
     </div>
     <div class="mb-3">
       <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1">
+      <input type="password" class="form-control"name="password" id="exampleInputPassword1">
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" name="submit" class="btn btn-primary" value="login">Log in</button>
   </form>
 </div>
 
@@ -45,3 +45,23 @@
 </body>
 
 </html>
+
+<?php
+   include("db/connection.php");
+   if(isset($_POST['submit']))
+   {
+      $email=$_POST['email'];
+      $password=$_POST['password'];
+      $query=mysqli_query($conn,"select * from admin_login where email='$email' AND password='$password'  ");
+      if($query)
+      {
+        if(mysqli_num_rows($query)>0)
+        {
+          header('location: home.php');
+        }
+        else{
+          echo "<script> alert('Please try again'); </script>";
+        }
+      }
+   }
+?>
